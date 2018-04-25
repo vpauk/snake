@@ -1,0 +1,8 @@
+
+hjavascript:S1854"BRemove this useless assignment to local variable "positionManager"(΅’γρϋÿÿÿÿ8¦‚ ξ―,
+Bjavascript:S878""Remove use of this comma operator.(‡°Έ8Θ±ξ―,
+Bjavascript:S1116"Remove this empty statement.(Ερ­υώÿÿÿÿ8¦‚ ξ―,
+:javascript:S2990"Remove the use of "this".(§™ΏΘ8Θ±ξ―,
+ojavascript:UnusedVariable"@Remove the declaration of the unused 'positionManager' variable.(΅’γρϋÿÿÿÿ8¦‚ ξ―,
+javascript:S2583"mChange this condition so that it does not always evaluate to "false"; some subsequent code is never executed.(χαρ»8Θ±ξ―,
+Bjavascript:S1116"Remove this empty statement.(Ερ­υώÿÿÿÿ8Θ±ξ―,
