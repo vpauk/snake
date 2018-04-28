@@ -1,44 +1,94 @@
 import {Shape} from './Shape/Shape'
+import { Snake } from './Snake';
+import { Cube } from './Shape/Cube';
 
 export class PositionManager {
     private static readonly step = 20;
 
-    constructor(protected shape: Shape, protected point: Shape) {
+    constructor(protected context: CanvasRenderingContext2D, protected snake: Snake, protected shape: Shape, protected point: Shape) {
         this.onKeyDown();
 
         setInterval(() => {
             this.move();
-
-            point.draw();
-        }, 1000);
+        }, 500);
     }
 
     private up(): void {
-        this.shape.setY(this.shape.getY() - PositionManager.step);
+        this.context.clearRect(0, 0, 400, 400);
 
-        this.shape.move();
+        const list = this.snake.getList().slice(0);
+
+        for (let item of list) {
+            item.setY(item.getY() - PositionManager.step);
+
+            if (item.getY() - PositionManager.step === this.point.getY() && item.getX() === this.point.getX()) {
+                let clonePoint = Object.assign(new Cube(this.context), this.point);
+                clonePoint.draw();
+                this.snake.add(clonePoint);
+
+                this.pointAdded();
+            }
+
+            item.draw();
+        }
     }
 
     private down(): void {
-        this.shape.setY(this.shape.getY() + PositionManager.step);
+        this.context.clearRect(0, 0, 400, 400);
 
-        this.shape.move();
+        const list = this.snake.getList().slice(0);
+        for (let item of list) {
+            item.setY(item.getY() + PositionManager.step);
+
+            if (item.getY() + PositionManager.step === this.point.getY() && item.getX() === this.point.getX()) {
+                let clonePoint = Object.assign(new Cube(this.context), this.point);
+                clonePoint.draw();
+                this.snake.add(clonePoint);
+
+                this.pointAdded();
+            }
+
+            item.draw();
+        }
     }
 
     private left(): void {
-        this.shape.setX(this.shape.getX() - PositionManager.step);
+        this.context.clearRect(0, 0, 400, 400);
 
-        this.shape.move();
+        const list = this.snake.getList().slice(0);
+        for (let item of list) {
+            item.setX(item.getX() - PositionManager.step);
+
+            if (item.getX() - PositionManager.step === this.point.getX() && item.getY() === this.point.getY()) {
+                let clonePoint = Object.assign(new Cube(this.context), this.point);
+                clonePoint.draw();
+                this.snake.add(clonePoint);
+
+                this.pointAdded();
+            }
+
+            item.draw();
+        }
     }
 
     private right(): void {
-        this.shape.setX(this.shape.getX() + PositionManager.step);
+        this.context.clearRect(0, 0, 400, 400);
 
-        if (this.shape.getX() >= this.point.getX() && this.shape.getY() >= this.point.getY()) {
-            console.log(11111111);
+       const list = this.snake.getList().slice(0);
+        for (let item of list) {
+    
+            item.setX(item.getX() + PositionManager.step);
+
+            if (item.getX() + PositionManager.step === this.point.getX() && item.getY() === this.point.getY()) {
+                let clonePoint = Object.assign(new Cube(this.context), this.point);
+                clonePoint.draw();
+                this.snake.add(clonePoint);
+
+                this.pointAdded();
+            }
+    
+            item.draw();
         }
-
-        this.shape.move();
     }
 
     protected onKeyDown(): void {
@@ -67,5 +117,12 @@ export class PositionManager {
         } else if (this.shape.getDirection() === Shape.DIRECTION_RIGHT) {
             this.right();
         }
+
+        this.point.draw();
+    }
+
+    public pointAdded(): void {
+        //this.context.clearRect(0, 0, 400, 400);
+        this.point = Cube.create(this.context).random().draw();
     }
 }

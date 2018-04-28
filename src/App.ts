@@ -1,5 +1,6 @@
 import { Cube } from "./Shape/Cube";
 import { PositionManager } from "./PositionManager";
+import { Snake } from "./Snake";
 
 export class App {
 
@@ -23,15 +24,15 @@ export class App {
             return i * 20;
         });
 
-        console.log(range);
 
-        const cube = new Cube(context);
-        const cube1 = new Cube(context);
-        console.log(Math.random() * (370 - 1) + 1);
-        cube1.setX(range[Math.floor(Math.random() * 21)]);
-        cube1.setY(range[Math.floor(Math.random() * 21)]);
-        cube1.draw();
+        const cube = Cube.create(context);
+        const cube1 = Cube.create(context)
+                            .random()
+                            .draw();
 
-        const positionManager = new PositionManager(cube, cube1);
+        const snake = new Snake(context);
+        snake.add(cube);
+
+        const positionManager = new PositionManager(context, snake, cube, cube1);
     }
 }

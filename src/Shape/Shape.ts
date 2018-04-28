@@ -10,12 +10,12 @@ export abstract class Shape {
     protected x = 0;
     protected y = 0;
     protected direction = Shape.DIRECTION_DOWN;
+    protected color = '';
 
     constructor(public context: CanvasRenderingContext2D) {
     }
 
     public abstract draw(): void;
-    public abstract move(): void;
 
     public getX(): number {
         return this.x;
