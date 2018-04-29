@@ -1,18 +1,17 @@
-import { Section } from "./Shape/Section";
-import { Shape } from "./Shape/Shape";
+import { Section } from "./Section";
 
 export class Snake {
-    protected list: Array<Shape> = [];
+    protected list: Array<Section> = [];
 
     constructor(protected context: CanvasRenderingContext2D) {
         this.list = [];
     }
 
-    public add(item: Shape): void {
+    public add(item: Section): void {
         this.list.push(item);
     }
 
-    public getList(): Array<Shape> {
+    public getList(): Array<Section> {
         return this.list;
     }
 }

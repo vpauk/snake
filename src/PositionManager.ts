@@ -1,11 +1,10 @@
-import {Shape} from './Shape/Shape'
-import { Snake } from './Snake';
-import { Section } from './Shape/Section';
+import {Snake} from './Snake';
+import {Section} from './Section';
+import {App} from "./App";
 
 export class PositionManager {
-    private static readonly step = 20;
 
-    constructor(protected context: CanvasRenderingContext2D, protected snake: Snake, protected shape: Shape, protected point: Shape) {
+    constructor(protected context: CanvasRenderingContext2D, protected snake: Snake, protected section: Section, protected point: Section) {
         this.onKeyDown();
 
         setInterval(() => {
@@ -14,16 +13,16 @@ export class PositionManager {
     }
 
     private up(): void {
-        this.context.clearRect(0, 0, 400, 400);
+        this.context.clearRect(0, 0, App.width, App.height);
 
         const list = this.snake.getList().slice(0);
 
         for (let item of list) {
-            let nextPosition = item.getY() - PositionManager.step;
+            let nextPosition = item.getY() - App.step;
 
-            if (item.getY() - PositionManager.step === this.point.getY() && item.getX() === this.point.getX()) {
+            if (item.getY() - App.step === this.point.getY() && item.getX() === this.point.getX()) {
                 let clonePoint = Object.assign(new Section(this.context), this.point);
-                clonePoint.setY(clonePoint.getY() - PositionManager.step);
+                clonePoint.setY(clonePoint.getY() - App.step);
                 clonePoint.draw();
                 this.snake.add(clonePoint);
 
@@ -36,15 +35,15 @@ export class PositionManager {
     }
 
     private down(): void {
-        this.context.clearRect(0, 0, 400, 400);
+        this.context.clearRect(0, 0, App.width, App.height);
 
         const list = this.snake.getList().slice(0);
         for (let item of list) {
-            let nextPosition = item.getY() + PositionManager.step;
+            let nextPosition = item.getY() + App.step;
 
-            if (item.getY() + PositionManager.step === this.point.getY() && item.getX() === this.point.getX()) {
+            if (item.getY() + App.step === this.point.getY() && item.getX() === this.point.getX()) {
                 let clonePoint = Object.assign(new Section(this.context), this.point);
-                clonePoint.setY(clonePoint.getY() + PositionManager.step);
+                clonePoint.setY(clonePoint.getY() + App.step);
                 clonePoint.draw();
                 this.snake.add(clonePoint);
 
@@ -57,71 +56,76 @@ export class PositionManager {
     }
 
     private left(): void {
-        this.context.clearRect(0, 0, 400, 400);
+        this.context.clearRect(0, 0, App.width, App.height);
 
         const list = this.snake.getList().slice(0);
         for (let item of list) {
-            let nextPosition = item.getX() - PositionManager.step
+            let nextPosition = item.getX() - App.step;
 
-            if (item.getX() - PositionManager.step === this.point.getX() && item.getY() === this.point.getY()) {
+            if (item.getX() - App.step === this.point.getX() && item.getY() === this.point.getY()) {
                 let clonePoint = Object.assign(new Section(this.context), this.point);
-                clonePoint.setX(clonePoint.getX() - PositionManager.step);
+                clonePoint.setX(clonePoint.getX() - App.step);
                 clonePoint.draw();
                 this.snake.add(clonePoint);
 
                 this.pointAdded();
             }
-    
+
             item.setX(nextPosition);
             item.draw();
         }
     }
 
     private right(): void {
-        this.context.clearRect(0, 0, 400, 400);
+        this.context.clearRect(0, 0, App.width, App.height);
 
-       const list = this.snake.getList().slice(0);
+        const list = this.snake.getList().slice(0);
         for (let item of list) {
-            let nextPosition = item.getX() + PositionManager.step;
+            let nextPosition = item.getX() + App.step;
 
-            if (item.getX() + PositionManager.step === this.point.getX() && item.getY() === this.point.getY()) {
+            if (item.getX() + App.step === this.point.getX() && item.getY() === this.point.getY()) {
                 let clonePoint = Object.assign(new Section(this.context), this.point);
-                clonePoint.setX(clonePoint.getX() + PositionManager.step);
+                clonePoint.setX(clonePoint.getX() + App.step);
                 clonePoint.draw();
                 this.snake.add(clonePoint);
 
                 this.pointAdded();
             }
-    
+
             item.setX(nextPosition);
             item.draw();
         }
     }
 
     protected onKeyDown(): void {
-        document.onkeydown = (e: KeyboardEvent) => {
-            e = e || window.event;
-
-            if (e.keyCode == 38) {
-                this.shape.setDirection(Shape.DIRECTION_UP);
-            } else if (e.keyCode == 40) {
-                this.shape.setDirection(Shape.DIRECTION_DOWN);
-            } else if (e.keyCode == 37) {
-                this.shape.setDirection(Shape.DIRECTION_LEFT);
-            } else if (e.keyCode == 39) {
-                this.shape.setDirection(Shape.DIRECTION_RIGHT);
+        document.onkeydown = (event: KeyboardEvent) => {
+            switch (event.key) {
+                case "ArrowDown":
+                    this.section.setDirection(Section.DIRECTION_DOWN);
+                    break;
+                case "ArrowUp":
+                    this.section.setDirection(Section.DIRECTION_UP);
+                    break;
+                case "ArrowLeft":
+                    this.section.setDirection(Section.DIRECTION_LEFT);
+                    break;
+                case "ArrowRight":
+                    this.section.setDirection(Section.DIRECTION_RIGHT);
+                    break;
+                default:
+                    return;
             }
         }
     }
 
     protected move(): void {
-        if (this.shape.getDirection() === Shape.DIRECTION_UP) {
+        if (this.section.getDirection() === Section.DIRECTION_UP) {
             this.up();
-        } else if (this.shape.getDirection() === Shape.DIRECTION_DOWN) {
+        } else if (this.section.getDirection() === Section.DIRECTION_DOWN) {
             this.down();
-        } else if (this.shape.getDirection() === Shape.DIRECTION_LEFT) {
+        } else if (this.section.getDirection() === Section.DIRECTION_LEFT) {
             this.left();
-        } else if (this.shape.getDirection() === Shape.DIRECTION_RIGHT) {
+        } else if (this.section.getDirection() === Section.DIRECTION_RIGHT) {
             this.right();
         }
 

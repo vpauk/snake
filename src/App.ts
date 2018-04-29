@@ -1,13 +1,23 @@
-import { Section } from "./Shape/Section";
-import { PositionManager } from "./PositionManager";
-import { Snake } from "./Snake";
+import {Section} from "./Section";
+import {PositionManager} from "./PositionManager";
+import {Snake} from "./Snake";
 
 export class App {
 
     /**
      * @type {number}
      */
-    static width = 400;
+    public static readonly width = 400;
+
+    /**
+     * @type {number}
+     */
+    public static readonly height = 400;
+
+    /**
+     * @type {number}
+     */
+    public static readonly step = 20;
 
     /**
      * Run game
@@ -20,15 +30,10 @@ export class App {
             return;
         }
 
-        const range = Array.apply(null, Array(21)).map((_: number, i: number) => {
-            return i * 20;
-        });
-
-
         const cube = Section.create(context);
         const cube1 = Section.create(context)
-                            .random()
-                            .draw();
+            .random()
+            .draw();
 
         const snake = new Snake(context);
         snake.add(cube);
