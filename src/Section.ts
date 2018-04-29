@@ -14,7 +14,6 @@ export class Section {
     protected direction = Section.DIRECTION_DOWN;
 
     constructor(protected context: CanvasRenderingContext2D) {
-        this.draw();
     }
 
     public static create(context: CanvasRenderingContext2D): Section {

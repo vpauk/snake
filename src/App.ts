@@ -30,14 +30,14 @@ export class App {
             return;
         }
 
-        const cube = Section.create(context);
-        const cube1 = Section.create(context)
+        const section = Section.create(context);
+        const point = Section.create(context)
             .random()
             .draw();
 
-        const snake = new Snake(context);
-        snake.add(cube);
+        const snake = new Snake();
+        snake.add(section);
 
-        const positionManager = new PositionManager(context, snake, cube, cube1);
+        const positionManager = new PositionManager(context, snake, section, point);
     }
 }
