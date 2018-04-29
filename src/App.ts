@@ -1,4 +1,4 @@
-import { Cube } from "./Shape/Cube";
+import { Section } from "./Shape/Section";
 import { PositionManager } from "./PositionManager";
 import { Snake } from "./Snake";
 
@@ -25,8 +25,8 @@ export class App {
         });
 
 
-        const cube = Cube.create(context);
-        const cube1 = Cube.create(context)
+        const cube = Section.create(context);
+        const cube1 = Section.create(context)
                             .random()
                             .draw();
 

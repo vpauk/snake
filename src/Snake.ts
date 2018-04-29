@@ -1,4 +1,4 @@
-import { Cube } from "./Shape/Cube";
+import { Section } from "./Shape/Section";
 import { Shape } from "./Shape/Shape";
 
 export class Snake {

@@ -1,6 +1,6 @@
 import {Shape} from './Shape';
 
-export class Cube extends Shape {
+export class Section extends Shape {
     protected width = 20;
     protected heigh = 20;
     protected x = 0;
@@ -13,18 +13,18 @@ export class Cube extends Shape {
         this.draw();
     }
 
-    public static create(context: CanvasRenderingContext2D): Cube {
-        return new Cube(context);
+    public static create(context: CanvasRenderingContext2D): Section {
+        return new Section(context);
     }
 
-    public draw(): Cube {
+    public draw(): Section {
         this.context.fillStyle = this.color;
         this.context.fillRect(this.x, this.y, this.width, this.heigh);   
 
         return this;
     }
 
-    public random(): Cube {
+    public random(): Section {
         const range = Array.apply(null, Array(21)).map((_: number, i: number) => {
             return i * 20;
         });
