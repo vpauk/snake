@@ -4,7 +4,12 @@ import {App} from "./App";
 
 export class PositionManager {
 
-    constructor(protected context: CanvasRenderingContext2D, protected snake: Snake, protected section: Section, protected point: Section) {
+    constructor(
+        protected context: CanvasRenderingContext2D,
+        protected snake: Snake,
+        protected section: Section,
+        protected point: Section
+    ) {
         this.onKeyDown();
 
         setInterval(() => {
