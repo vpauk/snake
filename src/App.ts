@@ -38,6 +38,6 @@ export class App {
         const snake = new Snake();
         snake.add(section);
 
-        const positionManager = new PositionManager(context, snake, section, point);
+        const positionManager = new PositionManager(context, snake, point);
     }
 }

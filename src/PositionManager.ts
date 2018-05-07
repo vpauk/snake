@@ -4,10 +4,11 @@ import {App} from "./App";
 
 export class PositionManager {
 
+    protected change: {x: number, y: number, direction: string} = {x: -1, y: -1, direction: ''};
+
     constructor(
         protected context: CanvasRenderingContext2D,
         protected snake: Snake,
-        protected section: Section,
         protected point: Section
     ) {
         this.onKeyDown();
@@ -17,105 +18,111 @@ export class PositionManager {
         }, 500);
     }
 
-    private up(): void {
+    private up(item: Section): void {
         this.context.clearRect(0, 0, App.width, App.height);
+        let nextPosition = item.getY() - App.step;
 
-        const list = this.snake.getList().slice(0);
+        if (item.getY() - App.step === this.point.getY() && item.getX() === this.point.getX()) {
+            let clonePoint = Object.assign(new Section(this.context), this.point);
+            clonePoint.setY(clonePoint.getY() - App.step);
+            clonePoint.setDirection(this.change.direction);
+            clonePoint.draw();
+            this.snake.add(clonePoint);
 
-        for (let item of list) {
-            let nextPosition = item.getY() - App.step;
-
-            if (item.getY() - App.step === this.point.getY() && item.getX() === this.point.getX()) {
-                let clonePoint = Object.assign(new Section(this.context), this.point);
-                clonePoint.setY(clonePoint.getY() - App.step);
-                clonePoint.draw();
-                this.snake.add(clonePoint);
-
-                this.pointAdded();
-            }
-
-            item.setY(nextPosition);
-            item.draw();
+            this.pointAdded();
         }
+
+        item.setY(nextPosition);
+        item.draw();
     }
 
-    private down(): void {
+    private down(item: Section): void {
         this.context.clearRect(0, 0, App.width, App.height);
 
-        const list = this.snake.getList().slice(0);
-        for (let item of list) {
-            let nextPosition = item.getY() + App.step;
+        let nextPosition = item.getY() + App.step;
 
-            if (item.getY() + App.step === this.point.getY() && item.getX() === this.point.getX()) {
-                let clonePoint = Object.assign(new Section(this.context), this.point);
-                clonePoint.setY(clonePoint.getY() + App.step);
-                clonePoint.draw();
-                this.snake.add(clonePoint);
+        if (item.getY() + App.step === this.point.getY() && item.getX() === this.point.getX()) {
+            let clonePoint = Object.assign(new Section(this.context), this.point);
+            clonePoint.setY(clonePoint.getY() + App.step);
+            clonePoint.setDirection(this.change.direction);
+            clonePoint.draw();
+            this.snake.add(clonePoint);
 
-                this.pointAdded();
-            }
-
-            item.setY(nextPosition);
-            item.draw();
+            this.pointAdded();
         }
+
+        item.setY(nextPosition);
+        item.draw();
     }
 
-    private left(): void {
+    private left(item: Section): void {
         this.context.clearRect(0, 0, App.width, App.height);
 
-        const list = this.snake.getList().slice(0);
-        for (let item of list) {
-            let nextPosition = item.getX() - App.step;
+        let nextPosition = item.getX() - App.step;
 
-            if (item.getX() - App.step === this.point.getX() && item.getY() === this.point.getY()) {
-                let clonePoint = Object.assign(new Section(this.context), this.point);
-                clonePoint.setX(clonePoint.getX() - App.step);
-                clonePoint.draw();
-                this.snake.add(clonePoint);
+        if (item.getX() - App.step === this.point.getX() && item.getY() === this.point.getY()) {
+            let clonePoint = Object.assign(new Section(this.context), this.point);
+            clonePoint.setX(clonePoint.getX() - App.step);
+            clonePoint.setDirection(this.change.direction);
+            clonePoint.draw();
+            this.snake.add(clonePoint);
 
-                this.pointAdded();
-            }
-
-            item.setX(nextPosition);
-            item.draw();
+            this.pointAdded();
         }
+
+        item.setX(nextPosition);
+        item.draw();
     }
 
-    private right(): void {
+    private right(item: Section): void {
         this.context.clearRect(0, 0, App.width, App.height);
 
-        const list = this.snake.getList().slice(0);
-        for (let item of list) {
-            let nextPosition = item.getX() + App.step;
+        let nextPosition = item.getX() + App.step;
+        let isTest = false;
 
-            if (item.getX() + App.step === this.point.getX() && item.getY() === this.point.getY()) {
-                let clonePoint = Object.assign(new Section(this.context), this.point);
-                clonePoint.setX(clonePoint.getX() + App.step);
-                clonePoint.draw();
-                this.snake.add(clonePoint);
+        if (item.getX() + App.step === this.point.getX() && item.getY() === this.point.getY()) {
+            alert(1);
+            let clonePoint = Object.assign(new Section(this.context), this.point);
+            clonePoint.setX(clonePoint.getX() + App.step);
+            clonePoint.setDirection(this.change.direction);
+            clonePoint.draw();
+            this.snake.add(clonePoint);
 
-                this.pointAdded();
-            }
+            this.pointAdded();
+            alert(2);
+            isTest = true;
+        }
 
-            item.setX(nextPosition);
-            item.draw();
+        console.log(nextPosition, item.getDirection());
+
+        item.setX(nextPosition);
+        item.draw();
+        if (isTest) {
+            alert(3);
         }
     }
 
     protected onKeyDown(): void {
         document.onkeydown = (event: KeyboardEvent) => {
+            this.change.x = this.snake.getHead().getX();
+            this.change.y = this.snake.getHead().getY();
+
             switch (event.key) {
                 case "ArrowDown":
-                    this.section.setDirection(Section.DIRECTION_DOWN);
+                    this.snake.getHead().setDirection(Section.DIRECTION_DOWN);
+                    this.change.direction = Section.DIRECTION_DOWN;
                     break;
                 case "ArrowUp":
-                    this.section.setDirection(Section.DIRECTION_UP);
+                    this.snake.getHead().setDirection(Section.DIRECTION_UP);
+                    this.change.direction = Section.DIRECTION_UP;
                     break;
                 case "ArrowLeft":
-                    this.section.setDirection(Section.DIRECTION_LEFT);
+                    this.snake.getHead().setDirection(Section.DIRECTION_LEFT);
+                    this.change.direction = Section.DIRECTION_LEFT;
                     break;
                 case "ArrowRight":
-                    this.section.setDirection(Section.DIRECTION_RIGHT);
+                    this.snake.getHead().setDirection(Section.DIRECTION_RIGHT);
+                    this.change.direction = Section.DIRECTION_RIGHT;
                     break;
                 default:
                     return;
@@ -124,14 +131,23 @@ export class PositionManager {
     }
 
     protected move(): void {
-        if (this.section.getDirection() === Section.DIRECTION_UP) {
-            this.up();
-        } else if (this.section.getDirection() === Section.DIRECTION_DOWN) {
-            this.down();
-        } else if (this.section.getDirection() === Section.DIRECTION_LEFT) {
-            this.left();
-        } else if (this.section.getDirection() === Section.DIRECTION_RIGHT) {
-            this.right();
+        const list = this.snake.getList().slice(0);
+    
+        console.log('**************************');
+        for (let item of list) {
+            if (item.getX() === this.change.x && item.getY() === this.change.y && this.change.direction !== item.getDirection()) {
+                item.setDirection(this.change.direction);
+            }
+
+            if (item.getDirection() === Section.DIRECTION_UP) {
+                this.up(item);
+            } else if (item.getDirection() === Section.DIRECTION_DOWN) {
+                this.down(item);
+            } else if (item.getDirection() === Section.DIRECTION_LEFT) {
+                this.left(item);
+            } else if (item.getDirection() === Section.DIRECTION_RIGHT) {
+                this.right(item);
+            }
         }
 
         this.point.draw();
